@@ -1,7 +1,5 @@
 import os
 
-
-
 def createDictionary():
 
     wordsAdded = {}
