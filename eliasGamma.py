@@ -1,4 +1,4 @@
-from math import log
+from math import log, ceil
 
 log2 = lambda x: log(x, 2)
 
@@ -9,14 +9,26 @@ def binary(x, l=1):
     s = '{0:0%db}'%l
     return s.format(x)
 
-def eliasGamma(x):
-    if x==0:
+def eliasGeneric(lencoding, x):
+    if x == 0:
         return '0'
-    n = 1+int(log2(x))
-    b = x-2**int(log2(x))
+    l = 1+int(log2(x))
+    a = x - 2**(int(log2(x)))
+    k = int(log2(x))
+    return lencoding(l) + binary(a,k)
 
-    l = int(log2(x))
+def golomb(b, x):
+    q = int((x) / b)
+    r = int((x) % b)
+    l = int(ceil(log2(b)))
+    return unary(q) + binary(r, l)
 
-    return unary(x)+binary(x,l)
+def eliasGamma(x):
+    return eliasGeneric(unary, x)
+
+def eliasDelta(x):
+    return eliasGeneric(eliasGamma,x)
 
 print(eliasGamma(10))
+print(eliasDelta(10))
+print(golomb(5, 9))
